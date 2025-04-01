@@ -84,6 +84,68 @@
             color: var(--gray);
         }
         
+        /* منوی همبرگر */
+        .hamburger-menu {
+            display: none;
+            flex-direction: column;
+            gap: 4px;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .hamburger-line {
+            width: 24px;
+            height: 2px;
+            background-color: var(--light);
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger-menu.active .hamburger-line:nth-child(1) {
+            transform: translateY(6px) rotate(45deg);
+        }
+        
+        .hamburger-menu.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger-menu.active .hamburger-line:nth-child(3) {
+            transform: translateY(-6px) rotate(-45deg);
+        }
+        
+        /* منوی موبایل */
+        .mobile-menu {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            right: 0;
+            background: var(--dark);
+            border-bottom: 1px solid var(--card-border);
+            padding: 1rem;
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+            z-index: 99;
+        }
+        
+        .mobile-menu.active {
+            display: flex;
+        }
+        
+        .mobile-menu-item {
+            padding: 0.8rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            color: var(--light);
+            text-decoration: none;
+        }
+        
+        .mobile-menu-item.active {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+        
         /* بخش اصلی */
         .main-container {
             display: grid;
@@ -231,6 +293,30 @@
             color: var(--danger);
         }
         
+        /* تب‌های ترید */
+        .trade-type-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 0.3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .trade-type-tab {
+            flex: 1;
+            text-align: center;
+            padding: 0.5rem;
+            cursor: pointer;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .trade-type-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+        
         /* فرم ترید */
         .trade-form {
             display: flex;
@@ -306,6 +392,24 @@
             color: white;
         }
         
+        /* تنظیمات اهرم فیوچرز */
+        .leverage-settings {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .leverage-input {
+            width: 60px;
+            padding: 0.3rem;
+            text-align: center;
+            border-radius: 4px;
+            border: 1px solid var(--card-border);
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--light);
+        }
+        
         /* داشبورد */
         .dashboard-section {
             display: none;
@@ -335,6 +439,95 @@
             font-size: 1.2rem;
             font-weight: 700;
             margin: 0.5rem 0;
+        }
+        
+        /* بخش دارایی‌ها */
+        .assets-section {
+            display: none;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .assets-section.active {
+            display: flex;
+        }
+        
+        .asset-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--card-border);
+        }
+        
+        .asset-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .asset-amount {
+            font-weight: 600;
+        }
+        
+        .asset-value {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .deposit-btn {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--secondary);
+            border: 1px solid var(--secondary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        
+        /* مودال واریز */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: var(--dark);
+            border-radius: 12px;
+            padding: 1.5rem;
+            width: 90%;
+            max-width: 400px;
+            border: 1px solid var(--card-border);
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .modal-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--gray);
+            font-size: 1.5rem;
+            cursor: pointer;
         }
         
         /* نوار پایینی */
@@ -438,10 +631,36 @@
                 height: 500px;
             }
         }
+        
+        /* برای موبایل */
+        @media (max-width: 767px) {
+            .hamburger-menu {
+                display: flex;
+            }
+            
+            .search-container {
+                margin: 0 0.5rem;
+            }
+            
+            .market-pairs {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+                font-size: 0.8rem;
+            }
+            
+            .trade-form {
+                padding: 0.5rem;
+            }
+        }
     </style>
 </head>
 <body>
     <header>
+        <div class="hamburger-menu" id="hamburger-menu">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </div>
+        
         <div class="logo">
             <i class="fas fa-rocket logo-icon"></i>
             <span>NovaX</span>
@@ -458,10 +677,29 @@
         </div>
     </header>
     
+    <div class="mobile-menu" id="mobile-menu">
+        <a href="#" class="mobile-menu-item" data-section="market">
+            <i class="fas fa-chart-line"></i>
+            <span>مارکت</span>
+        </a>
+        <a href="#" class="mobile-menu-item" data-section="trade">
+            <i class="fas fa-exchange-alt"></i>
+            <span>ترید</span>
+        </a>
+        <a href="#" class="mobile-menu-item" data-section="dashboard">
+            <i class="fas fa-tachometer-alt"></i>
+            <span>داشبورد</span>
+        </a>
+        <a href="#" class="mobile-menu-item" data-section="assets">
+            <i class="fas fa-wallet"></i>
+            <span>دارایی‌ها</span>
+        </a>
+    </div>
+    
     <main class="main-container">
         <div class="sidebar">
             <div class="card">
-                <h3 class="card-title">ارزهای پرطرفدار</h3>
+                <h3 class="card-title">ارزهای پرطرفدار <span id="refresh-btn" style="cursor: pointer;"><i class="fas fa-sync-alt"></i></span></h3>
                 <div class="market-pairs" id="all-pairs">
                     <div class="loading">در حال دریافت داده‌ها...</div>
                 </div>
@@ -494,12 +732,37 @@
                     </div>
                     
                     <div class="card">
+                        <div class="trade-type-tabs">
+                            <div class="trade-type-tab active" data-trade-type="spot">اسپات</div>
+                            <div class="trade-type-tab" data-trade-type="futures">فیوچرز</div>
+                        </div>
+                        
                         <div class="trade-header">
                             <div>
                                 <h3 id="trade-pair-name">BTC/USDT</h3>
                                 <div class="current-price" id="current-price">$0.00</div>
                             </div>
                             <div class="price-change change-up" id="price-change">+0.00%</div>
+                        </div>
+                        
+                        <!-- بخش فیوچرز (مخفی در ابتدا) -->
+                        <div class="futures-settings" id="futures-settings" style="display: none;">
+                            <div class="input-group">
+                                <label class="input-label">نوع معامله</label>
+                            </div>
+                            <div class="form-tabs">
+                                <div class="tab active" data-position-type="long">Long</div>
+                                <div class="tab" data-position-type="short">Short</div>
+                            </div>
+                            
+                            <div class="input-group">
+                                <label class="input-label">اهرم</label>
+                                <div class="leverage-settings">
+                                    <button class="btn" id="decrease-leverage">-</button>
+                                    <input type="text" class="leverage-input" id="leverage-input" value="10x" readonly>
+                                    <button class="btn" id="increase-leverage">+</button>
+                                </div>
+                            </div>
                         </div>
                         
                         <div class="trade-form">
@@ -562,6 +825,52 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- بخش دارایی‌ها -->
+            <div class="assets-section" id="assets-section">
+                <div class="card">
+                    <h3 class="card-title">دارایی‌های شما</h3>
+                    
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <i class="fab fa-bitcoin"></i>
+                            <div>
+                                <div class="asset-amount">0.000000 BTC</div>
+                                <div class="asset-value">≈ $0.00</div>
+                            </div>
+                        </div>
+                        <button class="deposit-btn" data-asset="btc">
+                            <i class="fas fa-plus"></i> واریز
+                        </button>
+                    </div>
+                    
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <i class="fab fa-ethereum"></i>
+                            <div>
+                                <div class="asset-amount">0.000000 ETH</div>
+                                <div class="asset-value">≈ $0.00</div>
+                            </div>
+                        </div>
+                        <button class="deposit-btn" data-asset="eth">
+                            <i class="fas fa-plus"></i> واریز
+                        </button>
+                    </div>
+                    
+                    <div class="asset-item">
+                        <div class="asset-info">
+                            <i class="fas fa-coins"></i>
+                            <div>
+                                <div class="asset-amount">0.00 USDT</div>
+                                <div class="asset-value">≈ $0.00</div>
+                            </div>
+                        </div>
+                        <button class="deposit-btn" data-asset="usdt">
+                            <i class="fas fa-plus"></i> واریز
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
     
@@ -578,7 +887,33 @@
             <i class="fas fa-tachometer-alt nav-icon"></i>
             <span>داشبورد</span>
         </a>
+        <a href="#" class="nav-item" data-section="assets">
+            <i class="fas fa-wallet nav-icon"></i>
+            <span>دارایی‌ها</span>
+        </a>
     </nav>
+    
+    <!-- مودال واریز -->
+    <div class="modal" id="deposit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">واریز <span id="deposit-asset-name"></span></h3>
+                <button class="close-modal" id="close-modal">&times;</button>
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">مقدار</label>
+                <input type="text" class="input-field" id="deposit-amount" placeholder="0.00">
+            </div>
+            
+            <div class="input-group">
+                <label class="input-label">آدرس کیف پول</label>
+                <input type="text" class="input-field" id="wallet-address" placeholder="آدرس خود را وارد کنید">
+            </div>
+            
+            <button class="btn btn-buy" id="confirm-deposit" style="margin-top: 1rem;">تایید واریز</button>
+        </div>
+    </div>
 
     <script>
         // متغیرهای جهانی
@@ -588,6 +923,9 @@
         let tickersData = {};
         let marketChart = null;
         let tradeChart = null;
+        let currentTradeType = "spot";
+        let currentPositionType = "long";
+        let leverage = 10;
         
         // نام فارسی ارزها
         const persianNames = {
@@ -624,58 +962,75 @@
             'GRT': 'د گراف'
         };
         
-        // دریافت نمادها از API کوکوین
+        // دریافت نمادها از API کوین‌گکو
         async function fetchSymbols() {
             try {
-                const response = await fetch('https://api.kucoin.com/api/v1/symbols');
+                const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false');
                 const data = await response.json();
                 
-                if (data.code === '200000') {
-                    // فیلتر کردن نمادهای USDT
-                    allSymbols = data.data
-                        .filter(symbol => symbol.quoteCurrency === 'USDT' && symbol.enableTrading)
-                        .map(symbol => ({
-                            symbol: symbol.baseCurrency,
-                            name: persianNames[symbol.baseCurrency] || symbol.baseCurrency,
-                            nameEn: symbol.baseCurrency,
-                            pair: `${symbol.baseCurrency}_USDT`,
-                            pairDisplay: `${symbol.baseCurrency}/USDT`
-                        }));
-                    
-                    // دریافت قیمت‌های لحظه‌ای
-                    await fetchTickers();
-                    
-                    // چارت بیتکوین به صورت پیش‌فرض
-                    initMarketChart();
-                }
+                allSymbols = data.map(coin => ({
+                    symbol: coin.symbol.toUpperCase(),
+                    name: persianNames[coin.symbol.toUpperCase()] || coin.name,
+                    nameEn: coin.name,
+                    pair: `${coin.symbol.toUpperCase()}_USDT`,
+                    pairDisplay: `${coin.symbol.toUpperCase()}/USDT`,
+                    current_price: coin.current_price,
+                    price_change_percentage_24h: coin.price_change_percentage_24h
+                }));
+                
+                // چارت بیتکوین به صورت پیش‌فرض
+                initMarketChart();
             } catch (error) {
                 console.error('Error fetching symbols:', error);
                 showError('خطا در دریافت داده‌ها. لطفاً صفحه را رفرش کنید.');
             }
         }
         
-        // دریافت قیمت‌های لحظه‌ای از API کوکوین
+        // دریافت قیمت‌های لحظه‌ای
         async function fetchTickers() {
             try {
-                const response = await fetch('https://api.kucoin.com/api/v1/market/allTickers');
+                const response = await fetch('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h');
                 const data = await response.json();
                 
-                if (data.code === '200000') {
-                    tickersData = {};
-                    
-                    data.data.ticker.forEach(ticker => {
-                        tickersData[ticker.symbol] = ticker;
-                    });
-                    
-                    renderCryptoList();
-                    
-                    if (currentMode === 'trade' && currentPair) {
-                        updateTradeInfo();
-                    }
+                tickersData = {};
+                data.forEach(coin => {
+                    tickersData[`${coin.symbol.toUpperCase()}_USDT`] = {
+                        last: coin.current_price,
+                        changeRate: coin.price_change_percentage_24h / 100
+                    };
+                });
+                
+                renderCryptoList();
+                
+                if (currentMode === 'trade' && currentPair) {
+                    updateTradeInfo();
                 }
             } catch (error) {
                 console.error('Error fetching tickers:', error);
             }
+        }
+        
+        // راه‌اندازی چارت مارکت
+        function initMarketChart() {
+            if (marketChart) {
+                marketChart.remove();
+            }
+            
+            marketChart = new TradingView.widget({
+                "autosize": true,
+                "symbol": `BINANCE:BTCUSDT`,
+                "interval": "15",
+                "timezone": "Asia/Tehran",
+                "theme": "dark",
+                "style": "1",
+                "locale": "en",
+                "toolbar_bg": "#0f172a",
+                "enable_publishing": false,
+                "hide_top_toolbar": false,
+                "hide_side_toolbar": false,
+                "allow_symbol_change": true,
+                "container_id": "market-chart"
+            });
         }
         
         // نمایش لیست ارزها
@@ -689,21 +1044,12 @@
             
             container.innerHTML = '';
             
-            // مرتب‌سازی بر اساس حجم معاملات
-            const sortedSymbols = [...allSymbols].sort((a, b) => {
-                const tickerA = tickersData[a.pair];
-                const tickerB = tickersData[b.pair];
-                const volA = tickerA ? parseFloat(tickerA.volValue) : 0;
-                const volB = tickerB ? parseFloat(tickerB.volValue) : 0;
-                return volB - volA;
-            });
-            
-            sortedSymbols.slice(0, 50).forEach(symbolInfo => {
+            allSymbols.forEach(symbolInfo => {
                 const ticker = tickersData[symbolInfo.pair];
                 if (!ticker) return;
                 
-                const lastPrice = parseFloat(ticker.last);
-                const priceChangePercent = parseFloat(ticker.changeRate) * 100;
+                const lastPrice = ticker.last;
+                const priceChangePercent = ticker.changeRate * 100;
                 
                 const pairElement = document.createElement('div');
                 pairElement.className = 'pair';
@@ -736,29 +1082,6 @@
             }
         }
         
-        // راه‌اندازی چارت مارکت
-        function initMarketChart() {
-            if (marketChart) {
-                marketChart.remove();
-            }
-            
-            marketChart = new TradingView.widget({
-                "autosize": true,
-                "symbol": `BINANCE:BTCUSDT`,
-                "interval": "15",
-                "timezone": "Asia/Tehran",
-                "theme": "dark",
-                "style": "1",
-                "locale": "en",
-                "toolbar_bg": "#0f172a",
-                "enable_publishing": false,
-                "hide_top_toolbar": false,
-                "hide_side_toolbar": false,
-                "allow_symbol_change": true,
-                "container_id": "market-chart"
-            });
-        }
-        
         // انتخاب یک جفت ارز
         function selectPair(pair, pairDisplay) {
             currentPair = pair;
@@ -766,50 +1089,8 @@
             
             if (!ticker) return;
             
-            const lastPrice = parseFloat(ticker.last);
-            const priceChangePercent = parseFloat(ticker.changeRate) * 100;
-            
-            // آپدیت چارت بر اساس حالت فعلی
-            if (currentMode === 'market') {
-                if (marketChart) {
-                    marketChart.remove();
-                }
-                marketChart = new TradingView.widget({
-                    "autosize": true,
-                    "symbol": `BINANCE:${pair.replace('_', '')}`,
-                    "interval": "15",
-                    "timezone": "Asia/Tehran",
-                    "theme": "dark",
-                    "style": "1",
-                    "locale": "en",
-                    "toolbar_bg": "#0f172a",
-                    "enable_publishing": false,
-                    "hide_top_toolbar": false,
-                    "hide_side_toolbar": false,
-                    "allow_symbol_change": true,
-                    "container_id": "market-chart"
-                });
-            } else {
-                // آپدیت چارت ترید
-                if (tradeChart) {
-                    tradeChart.remove();
-                }
-                tradeChart = new TradingView.widget({
-                    "autosize": true,
-                    "symbol": `BINANCE:${pair.replace('_', '')}`,
-                    "interval": "15",
-                    "timezone": "Asia/Tehran",
-                    "theme": "dark",
-                    "style": "1",
-                    "locale": "en",
-                    "toolbar_bg": "#0f172a",
-                    "enable_publishing": false,
-                    "hide_top_toolbar": false,
-                    "hide_side_toolbar": false,
-                    "allow_symbol_change": true,
-                    "container_id": "trade-chart"
-                });
-            }
+            const lastPrice = ticker.last;
+            const priceChangePercent = ticker.changeRate * 100;
             
             // آپدیت اطلاعات ارز
             document.getElementById('trade-pair-name').textContent = pairDisplay;
@@ -828,9 +1109,45 @@
                 }
             });
             
+            // آپدیت چارت
+            updateChart(pair.replace('_', ''));
+            
             // اگر در حالت ترید هستیم، اطلاعات را آپدیت کنیم
             if (currentMode === 'trade') {
                 updateTradeInfo();
+            }
+        }
+        
+        // آپدیت چارت
+        function updateChart(symbol) {
+            const chartContainerId = currentMode === 'market' ? 'market-chart' : 'trade-chart';
+            
+            if (currentMode === 'market' && marketChart) {
+                marketChart.remove();
+            } else if (tradeChart) {
+                tradeChart.remove();
+            }
+            
+            const chart = new TradingView.widget({
+                "autosize": true,
+                "symbol": `BINANCE:${symbol}`,
+                "interval": "15",
+                "timezone": "Asia/Tehran",
+                "theme": "dark",
+                "style": "1",
+                "locale": "en",
+                "toolbar_bg": "#0f172a",
+                "enable_publishing": false,
+                "hide_top_toolbar": false,
+                "hide_side_toolbar": false,
+                "allow_symbol_change": true,
+                "container_id": chartContainerId
+            });
+            
+            if (currentMode === 'market') {
+                marketChart = chart;
+            } else {
+                tradeChart = chart;
             }
         }
         
@@ -853,9 +1170,6 @@
                     
                     // فیلتر کردن نتایج بر اساس جستجو
                     const results = allSymbols.filter(symbolInfo => {
-                        const ticker = tickersData[symbolInfo.pair];
-                        if (!ticker) return false;
-                        
                         return (
                             symbolInfo.symbol.toLowerCase().includes(query) ||
                             symbolInfo.name.toLowerCase().includes(query) ||
@@ -872,8 +1186,8 @@
                             const ticker = tickersData[symbolInfo.pair];
                             if (!ticker) return;
                             
-                            const lastPrice = parseFloat(ticker.last);
-                            const priceChangePercent = parseFloat(ticker.changeRate) * 100;
+                            const lastPrice = ticker.last;
+                            const priceChangePercent = ticker.changeRate * 100;
                             
                             const resultItem = document.createElement('div');
                             resultItem.className = 'search-result-item';
@@ -930,27 +1244,7 @@
             document.getElementById('trade-content').style.display = 'block';
             
             // راه‌اندازی چارت ترید
-            if (tradeChart) {
-                tradeChart.remove();
-            }
-            
-            const symbol = currentPair.replace('_', '');
-            tradeChart = new TradingView.widget({
-                "autosize": true,
-                "symbol": `BINANCE:${symbol}`,
-                "interval": "15",
-                "timezone": "Asia/Tehran",
-                "theme": "dark",
-                "style": "1",
-                "locale": "en",
-                "toolbar_bg": "#0f172a",
-                "enable_publishing": false,
-                "hide_top_toolbar": false,
-                "hide_side_toolbar": false,
-                "allow_symbol_change": true,
-                "container_id": "trade-chart"
-            });
-            
+            updateChart(currentPair.replace('_', ''));
             updateTradeInfo();
         }
         
@@ -964,6 +1258,7 @@
         
         // مدیریت ناوبری
         function setupNavigation() {
+            // نوار پایینی
             const navItems = document.querySelectorAll('.nav-item');
             
             navItems.forEach(item => {
@@ -977,6 +1272,40 @@
                     switchSection(section);
                 });
             });
+            
+            // منوی همبرگر
+            const hamburgerMenu = document.getElementById('hamburger-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            hamburgerMenu.addEventListener('click', () => {
+                hamburgerMenu.classList.toggle('active');
+                mobileMenu.classList.toggle('active');
+            });
+            
+            // آیتم‌های منوی موبایل
+            const mobileMenuItems = document.querySelectorAll('.mobile-menu-item');
+            
+            mobileMenuItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const section = item.dataset.section;
+                    
+                    mobileMenuItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                    
+                    navItems.forEach(i => {
+                        if (i.dataset.section === section) {
+                            i.classList.add('active');
+                        } else {
+                            i.classList.remove('active');
+                        }
+                    });
+                    
+                    switchSection(section);
+                    hamburgerMenu.classList.remove('active');
+                    mobileMenu.classList.remove('active');
+                });
+            });
         }
         
         // تغییر بخش نمایش
@@ -986,6 +1315,7 @@
             document.getElementById('market-section').style.display = 'none';
             document.getElementById('trade-section').style.display = 'none';
             document.getElementById('dashboard-section').style.display = 'none';
+            document.getElementById('assets-section').style.display = 'none';
             
             if (section === 'market') {
                 document.getElementById('market-section').style.display = 'block';
@@ -998,25 +1328,7 @@
                 if (currentPair) {
                     document.getElementById('select-pair-section').style.display = 'none';
                     document.getElementById('trade-content').style.display = 'block';
-                    if (tradeChart) {
-                        tradeChart.remove();
-                    }
-                    const symbol = currentPair.replace('_', '');
-                    tradeChart = new TradingView.widget({
-                        "autosize": true,
-                        "symbol": `BINANCE:${symbol}`,
-                        "interval": "15",
-                        "timezone": "Asia/Tehran",
-                        "theme": "dark",
-                        "style": "1",
-                        "locale": "en",
-                        "toolbar_bg": "#0f172a",
-                        "enable_publishing": false,
-                        "hide_top_toolbar": false,
-                        "hide_side_toolbar": false,
-                        "allow_symbol_change": true,
-                        "container_id": "trade-chart"
-                    });
+                    updateChart(currentPair.replace('_', ''));
                     updateTradeInfo();
                 } else {
                     document.getElementById('select-pair-section').style.display = 'flex';
@@ -1024,7 +1336,60 @@
                 }
             } else if (section === 'dashboard') {
                 document.getElementById('dashboard-section').style.display = 'flex';
+            } else if (section === 'assets') {
+                document.getElementById('assets-section').style.display = 'flex';
             }
+        }
+        
+        // مدیریت نوع ترید (اسپات/فیوچرز)
+        function setupTradeTypeTabs() {
+            const tradeTypeTabs = document.querySelectorAll('.trade-type-tab');
+            
+            tradeTypeTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tradeTypeTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    currentTradeType = tab.dataset.tradeType;
+                    
+                    if (currentTradeType === 'futures') {
+                        document.getElementById('futures-settings').style.display = 'block';
+                    } else {
+                        document.getElementById('futures-settings').style.display = 'none';
+                    }
+                });
+            });
+            
+            // مدیریت نوع پوزیشن (Long/Short)
+            const positionTypeTabs = document.querySelectorAll('[data-position-type]');
+            
+            positionTypeTabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    positionTypeTabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    currentPositionType = tab.dataset.positionType;
+                });
+            });
+            
+            // مدیریت اهرم
+            const decreaseLeverageBtn = document.getElementById('decrease-leverage');
+            const increaseLeverageBtn = document.getElementById('increase-leverage');
+            const leverageInput = document.getElementById('leverage-input');
+            
+            decreaseLeverageBtn.addEventListener('click', () => {
+                if (leverage > 1) {
+                    leverage--;
+                    leverageInput.value = `${leverage}x`;
+                }
+            });
+            
+            increaseLeverageBtn.addEventListener('click', () => {
+                if (leverage < 100) {
+                    leverage++;
+                    leverageInput.value = `${leverage}x`;
+                }
+            });
         }
         
         // مدیریت فرم ترید
@@ -1039,7 +1404,15 @@
                     const symbol = currentPair.split('_')[0];
                     const price = parseFloat(document.getElementById('trade-price').value.replace(/,/g, ''));
                     const total = (parseFloat(amount) * price).toFixed(2);
-                    alert(`درخواست خرید ${amount} ${symbol} به مبلغ ${total} USDT ثبت شد`);
+                    
+                    let message = `درخواست خرید ${amount} ${symbol} به مبلغ ${total} USDT ثبت شد`;
+                    
+                    if (currentTradeType === 'futures') {
+                        message += `\nنوع پوزیشن: ${currentPositionType === 'long' ? 'Long' : 'Short'}`;
+                        message += `\nاهرم: ${leverage}x`;
+                    }
+                    
+                    alert(message);
                     amountInput.value = '';
                 } else {
                     alert('لطفا مقدار معتبر وارد کنید');
@@ -1052,10 +1425,65 @@
                     const symbol = currentPair.split('_')[0];
                     const price = parseFloat(document.getElementById('trade-price').value.replace(/,/g, ''));
                     const total = (parseFloat(amount) * price).toFixed(2);
-                    alert(`درخواست فروش ${amount} ${symbol} به مبلغ ${total} USDT ثبت شد`);
+                    
+                    let message = `درخواست فروش ${amount} ${symbol} به مبلغ ${total} USDT ثبت شد`;
+                    
+                    if (currentTradeType === 'futures') {
+                        message += `\nنوع پوزیشن: ${currentPositionType === 'long' ? 'Long' : 'Short'}`;
+                        message += `\nاهرم: ${leverage}x`;
+                    }
+                    
+                    alert(message);
                     amountInput.value = '';
                 } else {
                     alert('لطفا مقدار معتبر وارد کنید');
+                }
+            });
+        }
+        
+        // مدیریت دکمه‌های واریز
+        function setupDepositButtons() {
+            const depositBtns = document.querySelectorAll('.deposit-btn');
+            const depositModal = document.getElementById('deposit-modal');
+            const closeModal = document.getElementById('close-modal');
+            const confirmDeposit = document.getElementById('confirm-deposit');
+            
+            depositBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const asset = btn.dataset.asset;
+                    const assetName = {
+                        'btc': 'بیتکوین',
+                        'eth': 'اتریوم',
+                        'usdt': 'تتر'
+                    }[asset] || asset.toUpperCase();
+                    
+                    document.getElementById('deposit-asset-name').textContent = assetName;
+                    depositModal.style.display = 'flex';
+                });
+            });
+            
+            closeModal.addEventListener('click', () => {
+                depositModal.style.display = 'none';
+            });
+            
+            confirmDeposit.addEventListener('click', () => {
+                const amount = document.getElementById('deposit-amount').value;
+                const address = document.getElementById('wallet-address').value;
+                
+                if (amount && parseFloat(amount) > 0 && address) {
+                    alert(`درخواست واریز ${amount} ${document.getElementById('deposit-asset-name').textContent} به آدرس ${address} ثبت شد`);
+                    depositModal.style.display = 'none';
+                    document.getElementById('deposit-amount').value = '';
+                    document.getElementById('wallet-address').value = '';
+                } else {
+                    alert('لطفا اطلاعات را کامل وارد کنید');
+                }
+            });
+            
+            // بستن مودال با کلیک خارج از آن
+            window.addEventListener('click', (e) => {
+                if (e.target === depositModal) {
+                    depositModal.style.display = 'none';
                 }
             });
         }
@@ -1071,10 +1499,15 @@
             await fetchSymbols();
             setupSearch();
             setupNavigation();
+            setupTradeTypeTabs();
             setupTradeForm();
+            setupDepositButtons();
             
-            // به روزرسانی قیمت‌ها هر 30 ثانیه
-            setInterval(fetchTickers, 30000);
+            // دکمه رفرش
+            document.getElementById('refresh-btn').addEventListener('click', fetchTickers);
+            
+            // به روزرسانی قیمت‌ها هر 60 ثانیه
+            setInterval(fetchTickers, 60000);
         }
         
         // اجرای برنامه
