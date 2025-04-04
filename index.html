@@ -1930,23 +1930,167 @@
         }
 
         // به‌روزرسانی لیست دارایی‌ها
-        function updateAssetsList() {
+        // مدیریت بخش دارایی‌ها
+        function setupAssetsSection() {
             const assetsList = document.getElementById('assets-list');
-            if (!assetsList) return;
+            const assetDetailModal = document.getElementById('asset-detail-modal');
+            const closeAssetModal = document.getElementById('close-asset-modal');
 
-            assetsList.innerHTML = Object.keys(userBalances)
-                .filter(symbol => userBalances[symbol] > 0)
-                .map(symbol => `
-            <div class="asset-item">
-                <div class="asset-info">
-                    <i class="fab fa-${symbol.toLowerCase()}"></i>
-                    <div>
-                        <div class="asset-amount">${userBalances[symbol].toFixed(8)} ${symbol}</div>
-                        <div class="asset-value">≈ $${(userBalances[symbol] * (tickersData[`${symbol}_USDT`]?.last || 1)).toFixed(2)} USDT</div>
+            function renderAssetsList() {
+                assetsList.innerHTML = Object.keys(userBalances)
+                    .filter(symbol => userBalances[symbol] > 0)
+                    .map(symbol => `
+                <div class="asset-item" data-asset="${symbol}">
+                    <div class="asset-info">
+                        <i class="fab fa-${symbol.toLowerCase()}"></i>
+                        <div>
+                            <div class="asset-amount">${userBalances[symbol].toFixed(8)} ${symbol}</div>
+                            <div class="asset-value">≈ $${(userBalances[symbol] * (tickersData[`${symbol}_USDT`]?.last || 1)).toFixed(2)}</div>
+                        </div>
+                    </div>
+                    <div class="asset-actions">
+                        <button class="action-btn deposit-btn" data-action="deposit" data-asset="${symbol}">
+                            <i class="fas fa-plus"></i> واریز
+                        </button>
+                        <button class="action-btn withdraw-btn" data-action="withdraw" data-asset="${symbol}">
+                            <i class="fas fa-minus"></i> برداشت
+                        </button>
                     </div>
                 </div>
-            </div>
-        `).join('');
+            `).join('');
+            }
+
+            function openAssetModal(assetSymbol, initialTab = 'deposit') {
+                const assetName = persianNames[assetSymbol] || assetSymbol;
+                const assetBalance = userBalances[assetSymbol] || 0;
+                const assetValue = (assetBalance * (tickersData[`${assetSymbol}_USDT`]?.last || 1)).toFixed(2);
+
+                document.getElementById('asset-modal-title').textContent = `${ assetName } (${ assetSymbol })`;
+                document.getElementById('asset-modal-icon').innerHTML = `<i class="fab fa-${assetSymbol.toLowerCase()}"></i>`;
+                document.getElementById('asset-modal-name').textContent = `${ assetName } (${ assetSymbol })`;
+                document.getElementById('asset-modal-balance').textContent = `${ assetBalance.toFixed(8) } ${ assetSymbol }`;
+                document.getElementById('asset-modal-value').textContent = `≈ $${ assetValue }`;
+                document.getElementById('available-balance').textContent = assetBalance.toFixed(8);
+
+                // تنظیم آدرس واریز نمونه
+                document.getElementById('deposit-address').value = generateSampleAddress(assetSymbol);
+
+                switchTab(initialTab);
+                assetDetailModal.style.display = 'flex';
+            }
+
+            function switchTab(tabName) {
+                document.querySelectorAll('.asset-tab').forEach(tab => {
+                    tab.classList.remove('active');
+                    if (tab.dataset.tab === tabName) {
+                        tab.classList.add('active');
+                    }
+                });
+
+                document.querySelectorAll('.asset-tab-content').forEach(content => {
+                    content.style.display = 'none';
+                });
+
+                document.getElementById(`${tabName}-tab`).style.display = 'block';
+            }
+
+            function generateSampleAddress(symbol) {
+                // ساخت آدرس نمونه برای نمایش
+                const prefixes = {
+                    'BTC': '1A1zP1eP5QGefi2DMPTfTL5SLmv7',
+                    'ETH': '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
+                    'USDT': '0xdAC17F958D2ee523a2206206994597C13D831ec7'
+                };
+                return prefixes[symbol] || '1BvBMSEYstWetqTFn5Au4m4GFg7xJaNVN2';
+            }
+
+            // مدیریت کلیک روی دارایی‌ها
+            assetsList.addEventListener('click', (e) => {
+                const assetBtn = e.target.closest('[data-asset]');
+                if (!assetBtn) return;
+
+                const assetSymbol = assetBtn.dataset.asset;
+                const action = assetBtn.dataset.action;
+
+                if (assetSymbol && action) {
+                    openAssetModal(assetSymbol, action);
+                }
+            });
+
+            // بستن مودال
+            closeAssetModal.addEventListener('click', () => {
+                assetDetailModal.style.display = 'none';
+            });
+
+            // تغییر تب‌ها
+            document.querySelectorAll('.asset-tab').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    switchTab(tab.dataset.tab);
+                });
+            });
+
+            // کپی آدرس واریز
+            document.getElementById('copy-deposit-address').addEventListener('click', () => {
+                const address = document.getElementById('deposit-address');
+                address.select();
+                document.execCommand('copy');
+                alert('آدرس با موفقیت کپی شد!');
+            });
+
+            // تنظیم حداکثر مقدار برداشت
+            document.getElementById('set-max-amount').addEventListener('click', () => {
+                const availableBalance = parseFloat(document.getElementById('available-balance').textContent);
+                document.getElementById('withdraw-amount').value = availableBalance.toFixed(8);
+            });
+
+            // ارسال درخواست برداشت
+            document.getElementById('submit-withdraw').addEventListener('click', () => {
+                const amount = parseFloat(document.getElementById('withdraw-amount').value);
+                const address = document.getElementById('withdraw-address').value;
+                const network = document.getElementById('withdraw-network').value;
+                const assetSymbol = document.getElementById('asset-modal-name').textContent.split('(')[1].replace(')', '').trim();
+
+                if (!amount || amount <= 0) {
+                    alert('لطفاً مقدار معتبر وارد کنید');
+                    return;
+                }
+
+                if (!address) {
+                    alert('لطفاً آدرس مقصد را وارد کنید');
+                    return;
+                }
+
+                if (userBalances[assetSymbol] < amount) {
+                    alert(`موجودی ${assetSymbol} کافی نیست!`);
+                    return;
+                }
+
+                // انجام برداشت
+                userBalances[assetSymbol] -= amount;
+                alert(`برداشت ${amount} ${assetSymbol} به آدرس ${address} (شبکه: ${network}) با موفقیت ثبت شد`);
+                assetDetailModal.style.display = 'none';
+                renderAssetsList();
+            });
+
+            // واریز دارایی
+            document.getElementById('confirm-deposit').addEventListener('click', () => {
+                const amount = parseFloat(document.getElementById('deposit-amount').value);
+                const assetSymbol = document.getElementById('asset-modal-name').textContent.split('(')[1].replace(')', '').trim();
+
+                if (!amount || amount <= 0) {
+                    alert('لطفاً مقدار معتبر وارد کنید');
+                    return;
+                }
+
+                // انجام واریز
+                userBalances[assetSymbol] = (userBalances[assetSymbol] || 0) + amount;
+                alert(`واریز ${amount} ${assetSymbol} با موفقیت ثبت شد`);
+                assetDetailModal.style.display = 'none';
+                renderAssetsList();
+            });
+
+            // بارگذاری اولیه
+            renderAssetsList();
         }
 
         // به‌روزرسانی لیست معاملات فعال
