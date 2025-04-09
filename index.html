@@ -87,7 +87,7 @@
 
         /* منوی همبرگر */
         .hamburger-menu {
-            display: none;
+            display: flex;
             flex-direction: column;
             gap: 4px;
             cursor: pointer;
@@ -162,7 +162,7 @@
             border: 1px solid var(--card-border);
             border-radius: 12px;
             padding: 0.0rem;
-            height: 400px;
+            height: 450px;
             position: relative;
             overflow: hidden;
         }
@@ -395,36 +395,7 @@
 
 
 
-        /* داشبورد */
-        .dashboard-section {
-            display: none;
-            flex-direction: column;
-            gap: 1rem;
-        }
 
-        .dashboard-section.active {
-            display: flex;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 1rem;
-        }
-
-        .stat-card {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            border-radius: 8px;
-            padding: 1rem;
-            text-align: center;
-        }
-
-        .stat-value {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin: 0.5rem 0;
-        }
 
         /* بخش دارایی‌ها */
         .assets-section {
@@ -1224,8 +1195,8 @@
         </div>
     </div>
     <script>
-          // متغیرهای جهانی
-          let currentPair = "BTC_USDT"; // فرمت جفت ارزها در Binance
+        // متغیرهای جهانی
+        let currentPair = "BTC_USDT"; // فرمت جفت ارزها در Binance
         let currentMode = "market";
         let allSymbols = [];
         let tickersData = {};
@@ -1236,8 +1207,7 @@
         let availableBalance = 1000;
         let feeRate = 0.001;
         let userBalances = {
-
-            'USDT': 1000
+            'USDT': 10000
         };
         let ws = null;
         let priceUpdateInterval = null;
@@ -1369,7 +1339,6 @@
             });
         }
 
-        // بستن معامله هنگام فعال شدن حد ضرر/سود
         function closeOrder(orderIndex, reason) {
             const order = activeOrders[orderIndex];
             const symbol = order.pair.split('_')[0];
@@ -1390,8 +1359,7 @@
                     message += `حد ضرر فعال شد! زیان: ${Math.abs(profit).toFixed(2)} USDT (${Math.abs(profitPercent).toFixed(2)}%)`;
                 }
 
-                userBalances[symbol] -= order.amount;
-                userBalances['USDT'] = (userBalances['USDT'] || 0) + (order.amount * currentPrice);
+                userBalances['USDT'] = (userBalances['USDT'] || 0) + (order.amount * currentPrice); // فقط تتر تغییر می‌کنه
             } else {
                 profit = (order.entryPrice - currentPrice) * order.amount;
                 const profitPercent = ((order.entryPrice - currentPrice) / order.entryPrice) * 100;
@@ -1402,8 +1370,7 @@
                     message += `حد ضرر فعال شد! زیان: ${Math.abs(profit).toFixed(2)} USDT (${Math.abs(profitPercent).toFixed(2)}%)`;
                 }
 
-                userBalances['USDT'] -= order.amount * currentPrice;
-                userBalances[symbol] = (userBalances[symbol] || 0) + order.amount;
+                userBalances['USDT'] += profit; // فقط تتر تغییر می‌کنه
             }
 
             alert(message);
@@ -1454,17 +1421,17 @@
                 pairElement.dataset.pair = `${symbol.symbol}_USDT`;
 
                 pairElement.innerHTML = `
-            <div class="pair-info">
-                <i class="fas fa-coins"></i>
-                <div>
-                    <div class="pair-name">${symbol.name}</div>
-                    <div class="pair-symbol">${symbol.symbol}/USDT</div>
-                </div>
-            </div>
-            <div class="pair-price ${symbol.change >= 0 ? 'price-up' : 'price-down'}">
-                $${symbol.price.toLocaleString('en')}
-            </div>
-        `;
+      <div class="pair-info">
+          <i class="fas fa-coins"></i>
+          <div>
+              <div class="pair-name">${symbol.name}</div>
+              <div class="pair-symbol">${symbol.symbol}/USDT</div>
+          </div>
+      </div>
+      <div class="pair-price ${symbol.change >= 0 ? 'price-up' : 'price-down'}">
+          $${symbol.price.toLocaleString('en')}
+      </div>
+  `;
 
                 pairElement.addEventListener('click', () => {
                     selectPair(`${symbol.symbol}_USDT`, `${symbol.symbol}/USDT`);
@@ -1566,17 +1533,17 @@
                 pairElement.dataset.pair = symbolInfo.pair;
 
                 pairElement.innerHTML = `
-            <div class="pair-info">
-                <i class="fas fa-coins"></i>
-                <div>
-                    <div class="pair-name">${symbolInfo.name}</div>
-                    <div class="pair-symbol">${symbolInfo.pairDisplay}</div>
-                </div>
-            </div>
-            <div class="pair-price ${priceChangePercent >= 0 ? 'price-up' : 'price-down'}">
-                $${lastPrice.toLocaleString('en', { maximumFractionDigits: 6 })}
-            </div>
-        `;
+      <div class="pair-info">
+          <i class="fas fa-coins"></i>
+          <div>
+              <div class="pair-name">${symbolInfo.name}</div>
+              <div class="pair-symbol">${symbolInfo.pairDisplay}</div>
+          </div>
+      </div>
+      <div class="pair-price ${priceChangePercent >= 0 ? 'price-up' : 'price-down'}">
+          $${lastPrice.toLocaleString('en', { maximumFractionDigits: 6 })}
+      </div>
+  `;
 
                 pairElement.addEventListener('click', () => {
                     selectPair(symbolInfo.pair, symbolInfo.pairDisplay);
@@ -1700,14 +1667,14 @@
                             const resultItem = document.createElement('div');
                             resultItem.className = 'search-result-item';
                             resultItem.innerHTML = `
-                        <div>
-                            <div>${symbolInfo.name} <small>(${symbolInfo.symbol})</small></div>
-                            <div class="pair-symbol">${symbolInfo.pairDisplay}</div>
-                        </div>
-                        <div class="${priceChangePercent >= 0 ? 'price-up' : 'price-down'}">
-                            $${lastPrice.toLocaleString('en', { maximumFractionDigits: 4 })}
-                        </div>
-                    `;
+                  <div>
+                      <div>${symbolInfo.name} <small>(${symbolInfo.symbol})</small></div>
+                      <div class="pair-symbol">${symbolInfo.pairDisplay}</div>
+                  </div>
+                  <div class="${priceChangePercent >= 0 ? 'price-up' : 'price-down'}">
+                      $${lastPrice.toLocaleString('en', { maximumFractionDigits: 4 })}
+                  </div>
+              `;
 
                             resultItem.addEventListener('click', () => {
                                 selectPair(symbolInfo.pair, symbolInfo.pairDisplay);
@@ -1824,7 +1791,6 @@
             }
         }
 
-        // محاسبه معامله
         function calculateTrade() {
             const symbol = currentPair.split('_')[0];
             const amount = parseFloat(document.getElementById('trade-amount').value) || 0;
@@ -1838,19 +1804,21 @@
                 const receiveAmount = amount - (fee / price);
                 document.getElementById('receive-amount').textContent = receiveAmount.toFixed(8) + ' ' + symbol;
                 document.getElementById('available-balance').textContent = userBalances['USDT'] ? userBalances['USDT'].toFixed(2) : '0.00';
+                document.getElementById('balance-symbol').textContent = 'USDT';
+                document.getElementById('total-amount').value = total.toFixed(2) + ' USDT';
             } else {
                 const receiveAmount = (amount * price) - fee;
+                const costInUsdt = total + fee;
                 document.getElementById('receive-amount').textContent = receiveAmount.toFixed(2) + ' USDT';
-                document.getElementById('available-balance').textContent = userBalances[symbol] ? userBalances[symbol].toFixed(8) : '0.00000000';
+                document.getElementById('available-balance').textContent = userBalances['USDT'] ? userBalances['USDT'].toFixed(2) : '0.00';
+                document.getElementById('balance-symbol').textContent = 'USDT';
+                document.getElementById('total-amount').value = costInUsdt.toFixed(2) + ' USDT (هزینه کل)';
             }
 
-            document.getElementById('total-amount').value = total.toFixed(2) + ' USDT';
             document.getElementById('fee-amount').textContent = fee.toFixed(2) + ' USDT (' + (feeRate * 100) + '%)';
             document.getElementById('buy-btn').textContent = `خرید ${symbol}/USDT` + (takeProfit || stopLoss ? ` (حد سود: ${takeProfit || '-'} | حد ضرر: ${stopLoss || '-'})` : '');
             document.getElementById('sell-btn').textContent = `فروش ${symbol}/USDT` + (takeProfit || stopLoss ? ` (حد سود: ${takeProfit || '-'} | حد ضرر: ${stopLoss || '-'})` : '');
         }
-
-        // تنظیم دکمه‌های درصدی
         function setupAmountButtons() {
             document.querySelectorAll('.amount-btn').forEach(btn => {
                 btn.addEventListener('click', function () {
@@ -1862,7 +1830,7 @@
                     if (document.querySelector('.tab[data-tab="buy"].active')) {
                         maxAmount = userBalances['USDT'] / price;
                     } else {
-                        maxAmount = userBalances[symbol];
+                        maxAmount = userBalances['USDT'] / (price * (1 + feeRate));
                     }
 
                     const amount = maxAmount * percent;
@@ -1871,7 +1839,6 @@
                 });
             });
         }
-
         // به‌روزرسانی لیست دارایی‌ها
         function updateAssetsList() {
             const assetsList = document.getElementById('assets-list');
@@ -1880,24 +1847,24 @@
             assetsList.innerHTML = Object.keys(userBalances)
                 .filter(symbol => userBalances[symbol] > 0)
                 .map(symbol => `
-            <div class="asset-item" data-asset="${symbol}">
-                <div class="asset-info">
-                    <i class="fab fa-${symbol.toLowerCase()}"></i>
-                    <div>
-                        <div class="asset-amount">${userBalances[symbol].toFixed(8)} ${symbol}</div>
-                        <div class="asset-value">≈ $${(userBalances[symbol] * (tickersData[`${symbol}_USDT`]?.last || 1)).toFixed(2)}</div>
-                    </div>
-                </div>
-                <div class="asset-actions">
-                    <button class="action-btn deposit-btn" data-action="deposit" data-asset="${symbol}">
-                        <i class="fas fa-plus"></i> واریز
-                    </button>
-                    <button class="action-btn withdraw-btn" data-action="withdraw" data-asset="${symbol}">
-                        <i class="fas fa-minus"></i> برداشت
-                    </button>
-                </div>
-            </div>
-        `).join('');
+      <div class="asset-item" data-asset="${symbol}">
+          <div class="asset-info">
+              <i class="fab fa-${symbol.toLowerCase()}"></i>
+              <div>
+                  <div class="asset-amount">${userBalances[symbol].toFixed(8)} ${symbol}</div>
+                  <div class="asset-value">≈ $${(userBalances[symbol] * (tickersData[`${symbol}_USDT`]?.last || 1)).toFixed(2)}</div>
+              </div>
+          </div>
+          <div class="asset-actions">
+              <button class="action-btn deposit-btn" data-action="deposit" data-asset="${symbol}">
+                  <i class="fas fa-plus"></i> واریز
+              </button>
+              <button class="action-btn withdraw-btn" data-action="withdraw" data-asset="${symbol}">
+                  <i class="fas fa-minus"></i> برداشت
+              </button>
+          </div>
+      </div>
+  `).join('');
         }
 
         // به‌روزرسانی لیست معاملات فعال
@@ -1908,14 +1875,14 @@
             list.innerHTML = activeOrders.length === 0
                 ? '<div class="empty-state">هیچ معامله فعالی وجود ندارد.</div>'
                 : activeOrders.map(order => `
-            <div class="active-order">
-                <div>${order.type === 'buy' ? 'خرید' : 'فروش'} ${order.pair}</div>
-                <div>قیمت ورود: ${order.entryPrice.toFixed(2)} USDT</div>
-                <div>مقدار: ${order.amount.toFixed(8)} ${order.pair.split('_')[0]}</div>
-                <div>حد سود: ${order.takeProfit?.toFixed(2) || '-'} USDT</div>
-                <div>حد ضرر: ${order.stopLoss?.toFixed(2) || '-'} USDT</div>
-            </div>
-        `).join('');
+      <div class="active-order">
+          <div>${order.type === 'buy' ? 'خرید' : 'فروش'} ${order.pair}</div>
+          <div>قیمت ورود: ${order.entryPrice.toFixed(2)} USDT</div>
+          <div>مقدار: ${order.amount.toFixed(8)} ${order.pair.split('_')[0]}</div>
+          <div>حد سود: ${order.takeProfit?.toFixed(2) || '-'} USDT</div>
+          <div>حد ضرر: ${order.stopLoss?.toFixed(2) || '-'} USDT</div>
+      </div>
+  `).join('');
         }
 
         // مدیریت فرم ترید
@@ -1929,18 +1896,6 @@
                 tab.addEventListener('click', function () {
                     document.querySelectorAll('.tab[data-tab]').forEach(t => t.classList.remove('active'));
                     this.classList.add('active');
-
-                    const symbol = currentPair.split('_')[0];
-                    if (this.dataset.tab === 'buy') {
-                        document.getElementById('available-balance').textContent =
-                            userBalances['USDT'] ? userBalances['USDT'].toFixed(2) : '0.00';
-                        document.getElementById('balance-symbol').textContent = 'USDT';
-                    } else {
-                        document.getElementById('available-balance').textContent =
-                            userBalances[symbol] ? userBalances[symbol].toFixed(8) : '0.00000000';
-                        document.getElementById('balance-symbol').textContent = symbol;
-                    }
-
                     calculateTrade();
                 });
             });
@@ -1972,11 +1927,8 @@
                         (stopLoss ? `\nحد ضرر: ${stopLoss} USDT` : '');
 
                     if (confirm(message + '\n\nآیا از انجام معامله اطمینان دارید؟')) {
-                        // ثبت معامله
-                        userBalances['USDT'] -= total;
-                        userBalances[symbol] = (userBalances[symbol] || 0) + (amount - (fee / price));
+                        userBalances['USDT'] -= total; // فقط تتر کم می‌شه
 
-                        // ثبت معامله در لیست فعال
                         if (takeProfit || stopLoss) {
                             activeOrders.push({
                                 type: 'buy',
@@ -1998,7 +1950,7 @@
                         updateActiveOrdersList();
                     }
                 } else {
-                    alert('لطفا مقدار معتبر وارد کنید');
+                    alert('لطفاً مقدار معتبر وارد کنید');
                 }
             });
 
@@ -2012,25 +1964,25 @@
                     const symbol = currentPair.split('_')[0];
                     const total = amount * price;
                     const fee = total * feeRate;
+                    const costInUsdt = total + fee;
 
-                    if (!userBalances[symbol] || userBalances[symbol] < amount) {
-                        alert(`موجودی ${symbol} کافی نیست!`);
+                    if (userBalances['USDT'] < costInUsdt) {
+                        alert('موجودی USDT کافی نیست!');
                         return;
                     }
 
                     const message = `فروش ${amount} ${symbol} به قیمت ${price} USDT\n` +
                         `مبلغ کل: ${total.toFixed(2)} USDT\n` +
                         `کارمزد: ${fee.toFixed(2)} USDT\n` +
+                        `کسر از تتر: ${costInUsdt.toFixed(2)} USDT\n` +
                         `دریافتی: ${(total - fee).toFixed(2)} USDT` +
                         (takeProfit ? `\nحد سود: ${takeProfit} USDT` : '') +
                         (stopLoss ? `\nحد ضرر: ${stopLoss} USDT` : '');
 
                     if (confirm(message + '\n\nآیا از انجام معامله اطمینان دارید؟')) {
-                        // ثبت معامله
-                        userBalances[symbol] -= amount;
-                        userBalances['USDT'] = (userBalances['USDT'] || 0) + (total - fee);
+                        userBalances['USDT'] -= costInUsdt; // تتر کم می‌شه
+                        userBalances['USDT'] += total - fee; // تتر برمی‌گرده
 
-                        // ثبت معامله در لیست فعال
                         if (takeProfit || stopLoss) {
                             activeOrders.push({
                                 type: 'sell',
@@ -2052,13 +2004,12 @@
                         updateActiveOrdersList();
                     }
                 } else {
-                    alert('لطفا مقدار معتبر وارد کنید');
+                    alert('لطفاً مقدار معتبر وارد کنید');
                 }
             });
 
             setupAmountButtons();
         }
-
         // مدیریت بخش دارایی‌ها
         function setupAssetsSection() {
             const assetsList = document.getElementById('assets-list');
@@ -2066,48 +2017,43 @@
             const closeAssetModal = document.getElementById('close-asset-modal');
 
             function renderAssetsList() {
-                assetsList.innerHTML = Object.keys(userBalances)
-                    .filter(symbol => userBalances[symbol] > 0)
-                    .map(symbol => `
-                <div class="asset-item" data-asset="${symbol}">
-                    <div class="asset-info">
-                        <i class="fab fa-${symbol.toLowerCase()}"></i>
-                        <div>
-                            <div class="asset-amount">${userBalances[symbol].toFixed(8)} ${symbol}</div>
-                            <div class="asset-value">≈ $${(userBalances[symbol] * (tickersData[`${symbol}_USDT`]?.last || 1)).toFixed(2)}</div>
-                        </div>
-                    </div>
-                    <div class="asset-actions">
-                        <button class="action-btn deposit-btn" data-action="deposit" data-asset="${symbol}">
-                            <i class="fas fa-plus"></i> واریز
-                        </button>
-                        <button class="action-btn withdraw-btn" data-action="withdraw" data-asset="${symbol}">
-                            <i class="fas fa-minus"></i> برداشت
-                        </button>
+                assetsList.innerHTML = `
+            <div class="asset-item" data-asset="USDT">
+                <div class="asset-info">
+                    <i class="fab fa-tether"></i>
+                    <div>
+                        <div class="asset-amount">${(userBalances['USDT'] || 0).toFixed(8)} USDT</div>
+                        <div class="asset-value">≈ $${(userBalances['USDT'] || 0).toFixed(2)}</div>
                     </div>
                 </div>
-            `).join('');
+                <div class="asset-actions">
+                    <button class="action-btn deposit-btn" data-action="deposit" data-asset="USDT">
+                        <i class="fas fa-plus"></i> واریز
+                    </button>
+                    <button class="action-btn withdraw-btn" data-action="withdraw" data-asset="USDT">
+                        <i class="fas fa-minus"></i> برداشت
+                    </button>
+                </div>
+            </div>
+        `;
             }
-
             function openAssetModal(assetSymbol, initialTab = 'deposit') {
-                const assetName = persianNames[assetSymbol] || assetSymbol;
-                const assetBalance = userBalances[assetSymbol] || 0;
-                const assetValue = (assetBalance * (tickersData[`${assetSymbol}_USDT`]?.last || 1)).toFixed(2);
+                if (assetSymbol !== 'USDT') return; // فقط تتر اجازه واریز/برداشت داره
+                const assetName = persianNames['USDT'];
+                const assetBalance = userBalances['USDT'] || 0;
+                const assetValue = assetBalance.toFixed(2);
 
-                document.getElementById('asset-modal-title').textContent = `${assetName} (${assetSymbol})`;
-                document.getElementById('asset-modal-icon').innerHTML = `<i class="fab fa-${assetSymbol.toLowerCase()}"></i>`;
-                document.getElementById('asset-modal-name').textContent = `${assetName} (${assetSymbol})`;
-                document.getElementById('asset-modal-balance').textContent = `${assetBalance.toFixed(8)} ${assetSymbol}`;
+                document.getElementById('asset-modal-title').textContent = `${assetName} (USDT)`;
+                document.getElementById('asset-modal-icon').innerHTML = `<i class="fab fa-tether"></i>`;
+                document.getElementById('asset-modal-name').textContent = `${assetName} (USDT)`;
+                document.getElementById('asset-modal-balance').textContent = ` ${assetBalance.toFixed(8)} USDT`;
                 document.getElementById('asset-modal-value').textContent = `≈ $${assetValue}`;
                 document.getElementById('available-balance').textContent = assetBalance.toFixed(8);
 
-                // تنظیم آدرس واریز نمونه
-                document.getElementById('deposit-address').value = generateSampleAddress(assetSymbol);
-
+                document.getElementById('deposit-address').value = generateSampleAddress('USDT');
                 switchTab(initialTab);
                 assetDetailModal.style.display = 'flex';
             }
-
             function switchTab(tabName) {
                 document.querySelectorAll('.asset-tab').forEach(tab => {
                     tab.classList.remove('active');
